@@ -3,7 +3,7 @@ Console bot.
 The assistant bot should become a prototype of an assistant application for us. In the first approximation,
 the assistant application should be able to work with the contact book and calendar.
 
-Comands:
+Commands:
 -"about" replise to the console all available commands and their description
 -"hello", replies to the console "How can I help you?"
 -"add ...". With this command, the bot saves a new contact in memory.
