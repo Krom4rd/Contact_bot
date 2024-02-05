@@ -38,7 +38,7 @@ class Birthday(Field):
                 birthday_date = date(year=int(year), month=int(month), day=int(day))
                 self._value = birthday_date
             except ValueError:
-                raise ValueError('Date of birthday is not valid! (dd.mm.yyyy)')
+                print('Date of birthday is not valid! (dd.mm.yyyy)')
 
 class Name(Field):
     def __init__(self, name):
@@ -108,7 +108,7 @@ class Record():
 
     def days_to_birthday(self):
         if self.birthday.value == '':
-            return None
+            return 'This contact not have date of birthday'
         today = date.today()
         actual_birthday = self.birthday.value.replace(year=today.year)
         if actual_birthday < today:
@@ -131,10 +131,26 @@ class AddressBook(UserDict):
         if name in self.data:
             del self.data[name]
 
+    def global_find(self, string: str):
+        if not string:
+            return
+        result = AddressBook()
+        for k,v in self.data.items():
+            if v.name.value.lower().find(string[0].lower()) != -1:
+                result.add_record(v)
+                continue
+            for phone in v.phones:
+                if phone.value.find(string[0]) != -1:
+                    result.add_record(v)
+        if len(result) >= 1:
+            return result
+        else:
+            return 
+
     def find(self, name: str):
         if name in self.data:
             return self.data[name]
-        
+          
     def __iter__(self):
         self.idx = 0
         self.page = 0
@@ -176,83 +192,3 @@ class AddressBook(UserDict):
 
             return self.result
 
-if __name__ == '__main__':
-
-    print('----- Phone(Field)')
-    phone = Phone('0123456789')
-    print(phone.value)
-
-    phone.value = '9876543210'
-    print(phone.value)
-
-    print('----- Birthday(Field)')
-    birthday = Birthday('12.05.1990')
-    print(birthday.value)
-
-    birthday.value = '12.05.2023'
-    print(birthday.value)
-
-    print('----- Name(Field)')
-    name = Name('Vitalii')
-    get_name = name.value
-    print(get_name)
-
-    name.value = 'Bob'
-    print(name.value)
-
-    print('----- Record: add phone')
-    bob_record = Record('Bob')
-    bob_record.add_phone('0123456789')
-    bob_record.add_phone('0001112233')
-    print(bob_record)
-
-    print('----- Record: edit phone')
-    bob_record.edit_phone('0123456789', '0000000000')
-    print(bob_record)
-    # bob_record.edit_phone('1111111111', '0000000000')
-
-    print('----- Record: add birthday')
-    bob_record.add_birthday('30.09.1990')
-    print(bob_record)
-
-    print('----- Record: days_to_birthday')
-    days = bob_record.days_to_birthday()
-    print(days)
-
-    print('----- AddressBook: Iter')
-    # Створення нової адресної книги
-    book = AddressBook()
-    book.add_record(Record(name='Vitalii', phone='0000000000', birthday='12.05.1990'))
-    book.add_record(Record(name='Tom', phone='1111111111', birthday='03.02.1977'))
-    book.add_record(Record(name='Jane', phone='2222222222', birthday='06.01.1986'))
-    book.add_record(Record(name='John', phone='3333333333'))
-    book.add_record(Record(name='Andry', phone='4444444444', birthday='17.09.1980'))
-    book.add_record(Record(name='Lisa', phone='5555555555', birthday='04.07.1975'))
-    book.add_record(Record(name='Natasha', phone='6666666666', birthday='01.11.1991'))
-    book.add_record(Record(name='Ira', phone='7777777777', birthday='09.10.1993'))
-    book.add_record(Record(name='Vasya', phone='8888888888', birthday='09.05.1965'))
-    book.add_record(Record(name='Ivan', phone='9999999999', birthday='21.04.1968'))
-    book.add_record(Record(name='Stas', phone='0123456789', birthday='29.03.1974'))
-    book.add_record(Record(name='Sasha', phone='9876543210'))
-    book.add_record(Record(name='Marina', phone='1234567890', birthday='30.06.1976'))
-    book.add_record(Record(name='Boston', phone='0987654321', birthday='10.09.1993'))
-    book.add_record(Record(name='Vadim', phone='2345678901', birthday='12.10.1989'))
-    book.add_record(Record(name='Oleg', phone='1098765432', birthday='13.01.1978'))
-    book.add_record(Record(name='Valera', phone='3456789012', birthday='10.02.1974'))
-    book.add_record(Record(name='Anya', phone='2109876543', birthday='15.08.1991'))
-    book.add_record(Record(name='Kolya', phone='4567890123', birthday='16.03.1993'))
-    book.add_record(Record(name='Misha', phone='3210987654', birthday='08.01.1990'))
-    print(book)
-
-
-    print('----- AddressBook: Iter')
-    # Кількість записів на сторінці по замовчуванню
-    for line in book:
-        print(line)
-
-    # Кількість записів на сторінці змінюємо на 5
-    book.set_iter_records(5)
-
-    print('\n----- AddressBook: Повторний Iter')
-    for line in book:
-        print(line)

@@ -13,6 +13,10 @@ Commands:
     The passed argument "phonenumber" rejects all non-numeric characters.
 -"phone ...." With this command, the bot outputs the phone number for the specified contact to the console.
     Instead of ... the user enters the name of the contact whose number should be displayed.
+-"birthday ..." With this command, the bot saves the birthday for the contact.
+     Instead of ..., the user enters the name and date of birth (dd.mm.yyyy), necessarily with a space.
+-"days to birthday ..." With this command, the bot outputs to the console the number of days until the next birthday for the contact.
+     Instead of ... the user enters a name.
 -"show all". With this command, the bot outputs all saved contacts with phone numbers to the console.
 -"delete ..." With this command, the bot will delete the contact from memory.
     Instead of ... the user enters the name of the contact to be deleted.
