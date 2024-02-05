@@ -1,4 +1,7 @@
 import pathlib
+from pickle import dump, load
+from classes import Record, AddressBook, Phone, Name, Field
+
 
 
 # Кеш для контактів
@@ -33,7 +36,7 @@ def add_contact(data):
     # Поділ списку data на дві змінні name ,number
     name, number = data
     # Вилучить з номера телефону всі символи крім цифр
-    number = ''.join(n for n in number if n.isdigit())
+    number = Record.add_phone(number)
     # Перевірка на наявність контакту з таким імям
     if name in cache.keys():
         return f"Contact with name: {name} already present in cache,\n\
